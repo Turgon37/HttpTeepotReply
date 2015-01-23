@@ -1,6 +1,6 @@
 # -*-coding:Utf-8 -*
 
-# This file is a part of netsav
+# This file is a part of HttpTeepotReply
 #
 # Copyright (c) 2014-2015 Pierre GINDRAUD
 # 
@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-"""NETSAV/client package initializer
+"""HttpTeepotReply/httpteepotreply package initializer
 """
 
-__all__ = ['client']
+__all__ = ['httpteepotreply']

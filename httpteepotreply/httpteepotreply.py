@@ -1,32 +1,50 @@
 # -*-coding:Utf-8 -*
 
+# This file is a part of HttpTeepotReply
 #
-#title      :hechoreply.py
-#description  :Light http teepot echo reply client-server
-#author     :P.GINDRAUD
-#author_contact :pgindraud@gmail.com
-#created_on   :2014-11-23
-#
-#versions_notes :
-# see hechoreply.version
+# Copyright (c) 2014-2015 Pierre GINDRAUD
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 
+"""Main HttpTeepotReply module, contains main Class
+"""
+"""/httpteepotreply package initializer
+"""
+
+# System imports
 import logging
 import logging.handlers
-import re
-import sys
 import os
+import re
 import socket
+import sys
 
+# Projet Imports
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
-
-##
-# Http light Server class
-# Open a listening socket on specified address and port
-#  address => 'the iface on which listen'
-#  port => 'the port on which listen'
 class HttpTeepotReply(HTTPServer):
-  """ (extend HTTPServer) Run a simple http server
+  """(extend HTTPServer) Run a simple http server
+  
+  Http light Server class
+  Open a listening socket on specified address and port
+  address => 'the iface on which listen'
+  port => 'the port on which listen'
   """
   
   def __init__(self, address = '0.0.0.0', port = None, logger = None, 
@@ -91,10 +109,10 @@ class HttpTeepotReply(HTTPServer):
     try:
       HTTPServer.serve_forever(self)
     except (KeyboardInterrupt, SystemExit):
-      system_logger.error('## Abnormal termination ##')
+      self._logger.error('## Abnormal termination ##')
     
   def handle_timeout(self):
-    """ Special handler for periodic event defined by setTimeoutHandler
+    """Special handler for periodic event defined by setTimeoutHandler
     
     This override the handle_timeout function in HTTPServer
     It run a specific function defined by setTimeoutHandler
@@ -148,16 +166,17 @@ class HttpTeepotReply(HTTPServer):
 class HttpReplyHandler(BaseHTTPRequestHandler):
   """Http request reply handler class
   
-  Define an extension of the BaseHTTPRequestHandler to handle client 
-  queries
+  Define an extension of the BaseHTTPRequestHandler to handle client queries
   """
 
   def do_HEAD(self):
-    """Implement handler to HEAD request"""
+    """Implement handler to HEAD request
+    """
     self.do_GET()
 
   def do_GET(self):
-    """Implement handler to GET request"""
+    """Implement handler to GET request
+    """
     self.send_response_only(418, 'I\'m a teepot')
     self.send_header('Content-type', 'text/plain')
     self.send_header('Date', self.date_time_string())
@@ -165,12 +184,13 @@ class HttpReplyHandler(BaseHTTPRequestHandler):
     self._log_client()
 
   def do_POST(self):
-    """Implement handler to POST request"""
+    """Implement handler to POST request
+    """
     self.do_GET()
 
   def _log_client(self):
     """Emit logs messages to keep trace of incoming client request
-    """    
+    """
     self.server._logger.info('Receive a %s query from host %s:%s', 
                               self.command,
                               self.client_address[0],
