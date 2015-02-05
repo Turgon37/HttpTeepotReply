@@ -2,7 +2,7 @@
 
 This projected is licensed under the terms of the MIT license
 
-Simple http reply server which send a return code via http protocol
+Simple http reply server which answer to a tcpconnection with a simple http code
 
 ## Usage
 
