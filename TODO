@@ -1,4 +1,6 @@
 ## Todo
   * Add an option to disable info notification about connected client
+  * Add an automatic spoofer ban system based on remote host 
+address
 
 
