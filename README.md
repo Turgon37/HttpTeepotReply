@@ -24,4 +24,4 @@ As main program
 ## Installation
 
 Requires:
-* python3
+* python >= 3.2
