@@ -47,8 +47,12 @@ class HttpTeepotReply(HTTPServer):
   port => 'the port on which listen'
   """
   
+  IPV4_REGEX = '^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$'
+  DN_REGEX = '^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$'
+  
   def __init__(self, address = '0.0.0.0', port = None, logger = None, 
-                              bind_and_activate = True):
+                              bind_and_activate = True,
+                              log_client = True):
     """Constructor : Build an http teepot reply server
     
     @param(string) address : the address on which the server socket will listen
@@ -57,12 +61,14 @@ class HttpTeepotReply(HTTPServer):
                                     server will send log
     @param(boolean) bind_and_activate : define bind_and_activate option see 
                                           socketserver.TCPServer
+    @param(boolean) log_client : print a log entry for each client who make a query to this server
     """
     # Get logger
     if logger is None:
       self._logger = self._loggerInit()
     else:
       self._logger = logger
+    self._if_log_client = log_client
     # Get port
     if port:
       try:
@@ -75,7 +81,7 @@ class HttpTeepotReply(HTTPServer):
       sys.exit(-1)
     # Get address
     if address:
-      if re.match('([0-9]{1,3}\.){3}[0-9]{1,3}', address) is None:
+      if re.match(self.IPV4_REGEX, address) is None or re.match(self.DN_REGEX, address) is None:
         self._logger.error("Incorrect bind address read in configuration file:"
                             +" '%s'",
                             address)
@@ -124,6 +130,7 @@ class HttpTeepotReply(HTTPServer):
       else:
         self._logger.error('Unable to execute the timeout handling method')
     elif self._h_class and self._h_func:
+      # TODO 3.
       #obj = self._h_class()
       #obj._h_func()
       pass
@@ -191,7 +198,8 @@ class HttpReplyHandler(BaseHTTPRequestHandler):
   def _log_client(self):
     """Emit logs messages to keep trace of incoming client request
     """
-    self.server._logger.info('Receive a %s query from host %s:%s', 
+    if self.server._if_log_client:
+      self.server._logger.info('Receive a %s query from host %s:%s', 
                               self.command,
                               self.client_address[0],
                               self.client_address[1])
