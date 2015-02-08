@@ -23,8 +23,9 @@
 # SOFTWARE.
 
 """Main HttpTeepotReply module, contains main Class
-"""
-"""/httpteepotreply package initializer
+
+If you use self.server_forever() the server will handle indefinitly client request
+Else is you use self.handle_request() the server will handle request until timeout (defined by self.timeout=X) is reached, then it will run the handle_timeout and return
 """
 
 # System imports

@@ -23,5 +23,13 @@
 # SOFTWARE.
 
 """This file contain the program version and release notes
+
+versions_notes :
+  version 1.1 : 2015-02-08
+		+ add option to disable client request logging
+	version 1.0 : 2015-01-23
+		first release
 """
-version = '1.0'
+version = '1.1'
+
+
